@@ -1,0 +1,3 @@
+nick = {'pyBawt':
+        {'registered': False}
+        }

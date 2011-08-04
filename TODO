@@ -1,0 +1,23 @@
+This code will become the new trunk soon.
+
+I see no reason to maintain the legacy crap.
+
+TODO
+----
+
+Flesh out the API to let it do everything
+
+More verbose admin commands
+
+Handler for adding modules to other channels
+
+Handler for telling the bot what to do
+
+BUG: python2.6 won't create an args module which breaks the auto restart code
+
+RADIO!!
+-------
+
+Infrastructure for retrieving ops
+
+Decide how ircd/network agnostic I want this bot. I'm hoping to keep everything psych0tik agnostic in the modules.d structure. Even then I think I need to move the core stuff out.
