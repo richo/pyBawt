@@ -83,6 +83,7 @@ except ircSocket.IrcTerminated:
     # Catch but don't handle, die gracefully
     pass
 except Exception:
+    # TODO - Checkout from stable git branch
     if False: # Debug hook? Either way it's stupid.
         raise
     else:
