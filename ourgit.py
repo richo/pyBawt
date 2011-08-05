@@ -1,5 +1,10 @@
 import subprocess as sp
 
+def oneline(cmd):
+    p = sp.Popen(cmd.split(" "), stdout=sp.PIPE, close_fds=True)
+    p.wait()
+    return p.stdout.readline()
+
 def current_branch():
     p = sp.Popen(["/usr/bin/git", "branch"], stdin=sp.PIPE, stdout=sp.PIPE, close_fds=True)
     (stdout, stdin) = (p.stdout, p.stdin)
@@ -11,11 +16,7 @@ def current_branch():
 #   TODO
         
 def update_git():
-    branch = current_branch()
-    p = sp.Popen(["/usr/bin/git", "pull"], stdout=sp.PIPE, close_fds=True)
-    #(stdout, stdin) = (p.stdout, p.stdin)
-    p.wait()
-    return p.stdout.readline()
+    return oneline("git pull")
     # TODO sanity check
 
 
