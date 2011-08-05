@@ -6,5 +6,5 @@ class GitModule(BawtM2):
     def handle_privmsg(self, msg):
         cmd = self.m.group(2)
         if cmd:
-            self.parent.privmsg(msg.replyto, ourgit.oneline(cmd))
+            self.parent.privmsg(msg.replyto, ['git'] + ourgit.oneline(cmd))
     
