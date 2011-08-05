@@ -5,6 +5,7 @@ class ircnet(object):
     port = 6667
     ssl = False
     host = ''
+    # TODO WTF this isn't pulled from nicks?!
     nick = 'pyBawt'
     def __init__(self, host, port, ssl=False, nick='pyBawt',
             auth_host='', auth_hash=''):
