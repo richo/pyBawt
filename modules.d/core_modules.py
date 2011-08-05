@@ -1,6 +1,6 @@
 import re
 import time
-import oursvn
+import ourgit
 import os
 import sys
 import atexit
@@ -59,7 +59,7 @@ class AdminModule(BawtM2):
                 #traceback.print_tb(status, file=t)
                 traceback.print_exception(*status.args, file=t)
         elif self.m.group(2) == "update":
-            self.parent.privmsg(msg.replyto, oursvn.update_svn())
+            self.parent.privmsg(msg.replyto, ourgit.update_git())
         elif self.m.group(2) == "del":
             self.parent.privmsg(msg.replyto, "Sorry, not implemented")
         elif self.m.group(2) == "restart":
@@ -84,7 +84,7 @@ class DebugModule(BawtM2):
         if argv[0] == "!version":
             self.parent.privmsg(msg.replyto, "Modules: %(modv)s, Global: %(gvs)s" % {
                         'modv': VERSION,
-                        'gvs': oursvn.version()
+                        'gvs': ourgit.version()
                         })
         elif argv[0] == "!nick":
             self.parent.privmsg(msg.replyto, "%s: As far as I know, my nick is %s" % (msg.nick, self.parent.nick))
