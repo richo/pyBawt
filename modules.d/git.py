@@ -1,6 +1,6 @@
 import ourgit
 
-class GitModule(object):
+class GitModule(BawtM2):
     _name = "GitModule"
     privmsg_re = "^(!|%(nick)s:\s+)([^ ].*)"
     def handle_privmsg(self, msg):
