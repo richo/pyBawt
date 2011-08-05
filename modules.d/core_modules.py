@@ -23,6 +23,7 @@ class WriteThing(object):
 
 
 class HelpModule(BawtM2):
+    """Allows for reading the docstring of arbitrary modules"""
     _name = "HelpModule"
     privmsg_re = "^(!|%(nick)s:\s+)(help) ?([^ ]*)"
     def handle_privmsg(self, msg):
