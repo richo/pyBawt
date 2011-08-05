@@ -2,7 +2,7 @@
 for the pyBawt framework"""
 import re
 import time
-import oursvn
+import ourgit
 import os
 import sys
 import atexit

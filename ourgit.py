@@ -15,6 +15,7 @@ def update_git():
     p = sp.Popen(["/usr/bin/git", "pull"], stdout=sp.PIPE, close_fds=True)
     #(stdout, stdin) = (p.stdout, p.stdin)
     p.wait()
+    return p.stdout.readline()
     # TODO sanity check
 
 
