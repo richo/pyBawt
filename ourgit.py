@@ -1,9 +1,12 @@
 import subprocess as sp
 
 def oneline(cmd):
-    p = sp.Popen(cmd.split(" "), stdout=sp.PIPE, close_fds=True)
-    p.wait()
-    return p.stdout.readline()
+    try:
+        p = sp.Popen(cmd.split(" "), stdout=sp.PIPE, close_fds=True)
+        p.wait()
+        return p.stdout.readline()
+    except OSError:
+        return "Couldn't find binary (probably)"
 
 def current_branch():
     p = sp.Popen(["/usr/bin/git", "branch"], stdin=sp.PIPE, stdout=sp.PIPE, close_fds=True)
