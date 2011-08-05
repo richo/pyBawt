@@ -35,12 +35,14 @@ try:
 
     network = networks.networks[args.host]
     nick = args.nick
+    debug = args.debug
 except ImportError:
 # no argparse, probably py2.6
     if len(sys.argv) < 2:
         network = networks.networks[networks.default]
     else:
         network = networks.networks[sys.argv[1]]
+    debug = False
     # TODO - something clever here to make args still work
 
 def restart_stub():
@@ -84,7 +86,7 @@ except ircSocket.IrcTerminated:
     pass
 except Exception:
     # TODO - Checkout from stable git branch
-    if False: # Debug hook? Either way it's stupid.
+    if debug: # Debug hook? Either way it's stupid.
         raise
     else:
         restart_stub()
