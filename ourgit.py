@@ -7,16 +7,20 @@ def oneline(cmd):
         return p.stdout.readline()
     except OSError:
         return "Couldn't find binary (probably)"
+def sp_stdout(cmd):
+    try:
+        p = sp.Popen(cmd.split(" "), stdout=sp.PIPE, close_fds=True)
+        yield p.stdout
+    except OSError:
+        return "Couldn't find binary (probably)"
 
 def current_branch():
-    p = sp.Popen(["/usr/bin/git", "branch"], stdin=sp.PIPE, stdout=sp.PIPE, close_fds=True)
-    (stdout, stdin) = (p.stdout, p.stdin)
-    while True:
-        i = stdout.readline()
-        if i.startswith("*"):
-            return i[1:].strip()
-    return False
-#   TODO
+    with sp_stdout('git branch') as branchout:
+        while True:
+            i = stdout.readline()
+            if i.startswith("*"):
+                return i[1:].strip()
+        return False
         
 def update_git():
     return oneline("git pull")
@@ -30,9 +34,7 @@ def update_git_head():
     pass
 
 def version():
-    p = sp.Popen(["/usr/bin/git", "show", "--shortstat", "HEAD"], stdout=sp.PIPE, close_fds=True)
-    stdout = p.stdout
-    return stdout.readline()[:16]
+    return oneline('git show --shortstat HEAD')[:16]
 
 def log():
     return ""
