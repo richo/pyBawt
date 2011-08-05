@@ -28,10 +28,10 @@ def update_git():
 
 
 def checkout_git(branch):
-    pass
+    return oneline('git checkout %s' % branch)
 
 def update_git_head():
-    pass
+    return oneline('git reset --hard HEAD')
 
 def version():
     return oneline('git show --shortstat HEAD')[:16]
