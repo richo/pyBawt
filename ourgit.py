@@ -36,3 +36,7 @@ def log():
 
 def clean_git():
     pass
+
+def git(cmd):
+    return oneline("git %s" % cmd)
+    
