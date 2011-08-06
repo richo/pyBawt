@@ -32,10 +32,37 @@ class HelpModule(BawtM2):
                 self.parent.privmsg(msg.replyto, "%s: %s" % (msg.nick, i))
         else:
             self.parent.privmsg(msg.replyto, "%s: help [module]" % (msg.nick))
+class SourceModule(BawtM2):
+    """Contains the commands for interacting with pyBawts internal source management and update routines"""
+    _commands = ['reload', 'update', 'version']
+    privmsg_re = "^(!|%(nick)s:\s?)(%(commands)s)" % {'commands': "|".join(_commands),
+    _name = "SourceModule" 
+    def handle_privmsg(self, msg):
+        if not self.auth(msg):
+            self.parent.privmsg(msg.replyto, "%s: I don't know you." % (msg.nick))
+            return
+        argv = msg.data_segment.split(" ")
+        if self.m.group(2) == "reload":
+            status = self.parent.reload_modules()
+            if status:
+                self.parent.privmsg(msg.replyto, "%s: Reload Complete." % (msg.nick))
+            else:
+                t = WriteThing(self.parent, msg.nick)
+                self.parent.privmsg(msg.replyto, "%s: Reload Failed! (pm for stackdump)" % (msg.nick))
+                # TODO- this isn't actually the error in question. Lol.
+                #traceback.print_tb(status, file=t)
+                traceback.print_exception(*status.args, file=t)
+        elif self.m.group(2) == "update":
+            self.parent.privmsg(msg.replyto, ourgit.update_git())
+        elif self.m.group(2) == "version":
+            self.parent.privmsg(msg.replyto, "%(nick)s: %(version)s on %(branch)s" %
+                    {   "nick": msg.nick,
+                        "version": ourgit.version(),
+                        "branch": ourgit.current_branch()})
 
 class AdminModule(BawtM2):
     """Houses nearly everything that needs Authentication"""
-    _commands = ['list', 'reload', 'restart', 'update', 'del', 'modlist', 'version']
+    _commands = ['list', 'restart', 'del', 'modlist']
     privmsg_re = "^(!|%(nick)s:\s?)(%(commands)s)" % {'commands': "|".join(_commands),
             'nick': '%(nick)s'}
     _name = "AdminModule" 
@@ -49,27 +76,10 @@ class AdminModule(BawtM2):
 
         if self.m.group(2) == "list":
             self.parent.privmsg(msg.replyto, self.channel.dump_modules())
-        elif self.m.group(2) == "reload":
-            status = self.parent.reload_modules()
-            if status:
-                self.parent.privmsg(msg.replyto, "%s: Reload Complete." % (msg.nick))
-            else:
-                t = WriteThing(self.parent, msg.nick)
-                self.parent.privmsg(msg.replyto, "%s: Reload Failed! (pm for stackdump)" % (msg.nick))
-                # TODO- this isn't actually the error in question. Lol.
-                #traceback.print_tb(status, file=t)
-                traceback.print_exception(*status.args, file=t)
-        elif self.m.group(2) == "update":
-            self.parent.privmsg(msg.replyto, ourgit.update_git())
         elif self.m.group(2) == "del":
             self.parent.privmsg(msg.replyto, "Sorry, not implemented")
         elif self.m.group(2) == "restart":
             raise Restart
-        elif self.m.group(2) == "version":
-            self.parent.privmsg(msg.replyto, "%(nick)s: %(version)s on %(branch)s" %
-                    {   "nick": msg.nick,
-                        "version": ourgit.version(),
-                        "branch": ourgit.current_branch()})
         elif self.m.group(2) == "modlist":
             self.parent.privmsg(msg.replyto, "%(nick)s: %(mods)s" % {'nick': msg.nick,
                 'mods': ', '.join(self.parent.available_modules())})

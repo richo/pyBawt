@@ -2,7 +2,7 @@
 
 modules = OurModules()
 modules["default"] = [ AddModule, HelpModule, SnackModule ]
-modules["#rawptest"] = [ ChanModule, AdminModule, PenisModule, GreetModule, RadioModule ]
+modules["#rawptest"] = [ ChanModule, AdminModule, SourceModule, GreetModule, RadioModule ]
 modules["#psych0tik"] = [ GreetModule, RadioModule ]
 modules["#hbh"] = [ LinkModule ]
 modules["#cbr250"] = [ OrlyModule, BlipModule ]
