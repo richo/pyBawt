@@ -35,7 +35,7 @@ class HelpModule(BawtM2):
 
 class AdminModule(BawtM2):
     """Houses nearly everything that needs Authentication"""
-    _commands = ['list', 'reload', 'restart', 'update', 'del', 'modlist']
+    _commands = ['list', 'reload', 'restart', 'update', 'del', 'modlist', 'version']
     privmsg_re = "^(!|%(nick)s:\s?)(%(commands)s)" % {'commands': "|".join(_commands),
             'nick': '%(nick)s'}
     _name = "AdminModule" 
@@ -65,6 +65,10 @@ class AdminModule(BawtM2):
             self.parent.privmsg(msg.replyto, "Sorry, not implemented")
         elif self.m.group(2) == "restart":
             raise Restart
+        elif self.m.group(2) == "version":
+            self.parent.privmsg(msg.replyto, "%(nick)s: %(version)s" %
+                    {   "nick": msg.nick,
+                        "version": ourgit.version() })
         elif self.m.group(2) == "modlist":
             self.parent.privmsg(msg.replyto, "%(nick)s: %(mods)s" % {'nick': msg.nick,
                 'mods': ', '.join(self.parent.available_modules())})
