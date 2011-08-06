@@ -66,9 +66,10 @@ class AdminModule(BawtM2):
         elif self.m.group(2) == "restart":
             raise Restart
         elif self.m.group(2) == "version":
-            self.parent.privmsg(msg.replyto, "%(nick)s: %(version)s" %
+            self.parent.privmsg(msg.replyto, "%(nick)s: %(version)s on %(branch)s" %
                     {   "nick": msg.nick,
-                        "version": ourgit.version() })
+                        "version": ourgit.version(),
+                        "branch": ourgit.current_branch()})
         elif self.m.group(2) == "modlist":
             self.parent.privmsg(msg.replyto, "%(nick)s: %(mods)s" % {'nick': msg.nick,
                 'mods': ', '.join(self.parent.available_modules())})
