@@ -60,6 +60,8 @@ class SourceModule(BawtM2):
                     {   "nick": msg.nick,
                         "version": ourgit.version(),
                         "branch": ourgit.current_branch()})
+        elif self.m.group(2) == "checkout":
+            self.parent.privmsg(msg.replyto, "Not implemented LOL!")
 
 class AdminModule(BawtM2):
     """Houses nearly everything that needs Authentication"""
