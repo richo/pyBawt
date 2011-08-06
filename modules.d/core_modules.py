@@ -36,6 +36,7 @@ class SourceModule(BawtM2):
     """Contains the commands for interacting with pyBawts internal source management and update routines"""
     _commands = ['reload', 'update', 'version']
     privmsg_re = "^(!|%(nick)s:\s?)(%(commands)s)" % {'commands': "|".join(_commands),
+            'nick': '%(nick)s'}
     _name = "SourceModule" 
     def handle_privmsg(self, msg):
         if not self.auth(msg):
