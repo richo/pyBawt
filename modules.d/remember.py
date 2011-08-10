@@ -39,7 +39,7 @@ class NoteModule(BawtM2):
             return
         argv = msg.data_segment.split(" ")
         if self.m.group(2) == "store":
-            note = argv[1:].join(" ")
+            note = " ".join(argv[1:])
             if note:
                 if note in self.notes:
                     self.reply(msg, "Message already stored")
