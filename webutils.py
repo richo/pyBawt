@@ -16,7 +16,7 @@ def publish(content, prefix=""):
         name += prefix + "_"
     name += "%i" % time.time()
     try:
-        fh = open(os.path.join(docroot, name))
+        fh = open(os.path.join(docroot, name), 'w')
         fh.write(content)
         fh.close()
         return webroot + name
