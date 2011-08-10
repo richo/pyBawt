@@ -14,7 +14,7 @@ class NoteModule(BawtM2):
 # Notefile handlers {{{
     def read_notes(self):
         try:
-            for i in open(note_file, 'r').readlines():
+            for i in open(self.note_file, 'r').readlines():
                 line = i.replace("\r", "").replace("\n", "")
                 self.notes.append(line)
         except IOError:
@@ -22,7 +22,7 @@ class NoteModule(BawtM2):
 
     def write_notes(self):
         try:
-            fh = open(note_file, 'w')
+            fh = open(self.note_file, 'w')
             for i in self.notes:
                 fh.write(i + '\n')
             return True
