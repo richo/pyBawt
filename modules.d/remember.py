@@ -8,8 +8,7 @@ class NoteModule(BawtM2):
             'nick': '%(nick)s'}
     note_file = "note_data"
 
-    @staticmethod
-    def Notes():
+    def Notes(self):
         try:
             out = []
             for i in open(self.note_file, 'r').readlines():
@@ -32,7 +31,7 @@ class NoteModule(BawtM2):
         if not self.auth(msg):
             self.parent.privmsg(msg.replyto, "%s: I don't know you." % (msg.nick))
             return
-        with Notes() as notes:
+        with self.Notes() as notes:
             argv = msg.data_segment.split(" ")
             if self.m.group(2) == "store":
                 note = " ".join(argv[1:])
