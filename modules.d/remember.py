@@ -48,7 +48,7 @@ class NoteModule(BawtM2):
                     self.reply(msg, "!store <note>")
             elif self.m.group(2) == "clear":
                 while notes:
-                    notes.remove(0)
+                    del notes[0]
                 self.reply(msg, "Message list cleared.")
             elif self.m.group(2) == "list":
                 if not notes:
