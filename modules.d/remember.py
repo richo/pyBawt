@@ -30,20 +30,28 @@ class NoteModule(BawtM2):
             return False
 # }}}
 
+    def reply(self, msg, say):
+        self.parent.privmsg(msg.replyto, "%s: %s" % (msg.nick, say))
+
     def handle_privmsg(self, msg):
         if not self.auth(msg):
             self.parent.privmsg(msg.replyto, "%s: I don't know you." % (msg.nick))
             return
         argv = msg.data_segment.split(" ")
         if self.m.group(2) == "store":
-            self.parent.privmsg(msg.replyto, "%s: store %s" % (
-                msg.nick, repr(argv)))
+            note = argv[1:].join(" ")
+            if note and note not in self.notes:
+                self.notes.append(note)
+                self.reply(msg, "Stored.")
+            else:
+                self.reply(msg, "Message already present, or nonexistant.")
         elif self.m.group(2) == "clear":
-            self.parent.privmsg(msg.replyto, "%s: clear %s" % (
-                msg.nick, repr(argv)))
+            self.notes = []
+            self.reply(msg, "Message list cleared.")
         elif self.m.group(2) == "list":
-            self.parent.privmsg(msg.replyto, "%s: list %s" % (
-                msg.nick, repr(argv)))
-
-
+            if self.notes:
+                for i in self.notes:
+                    self.reply(msg, i)
+            else:
+                self.reply("I pity the fool who has no notes")
 
