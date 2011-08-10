@@ -66,7 +66,7 @@ class SourceModule(BawtM2):
 class AdminModule(BawtM2):
     """Houses nearly everything that needs Authentication"""
     _commands = ['list', 'restart', 'del', 'modlist']
-    privmsg_re = "^(!|%(nick)s:\s?)(%(commands)s)" % {'commands': "|".join(_commands),
+    privmsg_re = "^(!|%(nick)s:\s?)(%(commands)s) " % {'commands': "|".join(_commands),
             'nick': '%(nick)s'}
     _name = "AdminModule" 
     def handle_privmsg(self, msg):
