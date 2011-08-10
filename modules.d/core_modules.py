@@ -65,7 +65,7 @@ class SourceModule(BawtM2):
 
 class AdminModule(BawtM2):
     """Houses nearly everything that needs Authentication"""
-    _commands = ['list', 'restart', 'del', 'modlist']
+    _commands = ['loaded', 'restart', 'del', 'modlist']
     privmsg_re = "^(!|%(nick)s:\s?)(%(commands)s) ?" % {'commands': "|".join(_commands),
             'nick': '%(nick)s'}
     _name = "AdminModule" 
@@ -77,7 +77,7 @@ class AdminModule(BawtM2):
         # TODO - Second argument for channel.
         # TODO - Hax at this to replace the argv[0] matching based on a regex group to pull the commnad
 
-        if self.m.group(2) == "list":
+        if self.m.group(2) == "loaded":
             self.parent.privmsg(msg.replyto, self.channel.dump_modules())
         elif self.m.group(2) == "del":
             self.parent.privmsg(msg.replyto, "Sorry, not implemented")
