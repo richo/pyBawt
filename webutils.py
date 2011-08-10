@@ -10,11 +10,11 @@ docroot = "/home/pyBawt/public_html"
 class PublicationError(Exception):
     pass
 
-def publish(content, prefix=""):
+def publish(content, prefix="", suffix="txt"):
     name = ""
     if prefix:
         name += prefix + "_"
-    name += "%i" % time.time()
+    name += "%i.%s" % (time.time(), suffix)
     try:
         fh = open(os.path.join(docroot, name), 'w')
         fh.write(content)
