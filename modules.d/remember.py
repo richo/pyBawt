@@ -1,6 +1,7 @@
 
 
 class NoteModule(BawtM2):
+    """A module for the storage and retrieval of notes"""
     _name = "NoteModule"
     _commands = ['store', 'clear', 'list']
     privmsg_re = "^(!|%(nick)s:\s?)(%(commands)s)" % {'commands': "|".join(_commands),
