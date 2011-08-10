@@ -21,5 +21,5 @@ def publish(content, prefix="", suffix="txt"):
         fh.close()
         return webroot + name
 
-    except OSError:
+    except IOError:
         raise PublicationError
