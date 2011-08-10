@@ -12,7 +12,7 @@ def sp_stdout(cmd):
         p = sp.Popen(cmd.split(" "), stdout=sp.PIPE, close_fds=True)
         yield p.stdout
     except OSError:
-        return StopIteration
+        raise StopIteration
 
 def current_branch():
     with sp_stdout('git branch') as branchout:
