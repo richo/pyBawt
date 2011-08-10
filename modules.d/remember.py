@@ -1,5 +1,24 @@
 import webutils as wb
 
+class Notes(object):
+    def __init__(self, note_file):
+        self.note_file = note_file
+
+    def __enter__(self):
+        try:
+            self.out = []
+            for i in open(self.note_file, 'r').readlines():
+                line = i.replace("\r", "").replace("\n", "")
+                self.out.append(line)
+            return self.out
+        except IOError:
+            return []
+    def __exit__(self, type, value, traceback):
+        fh = open(self.note_file, 'w')
+        for i in self.out:
+            fh.write(i + '\n')
+
+
 class NoteModule(BawtM2):
     """A module for the storage and retrieval of notes"""
     _name = "NoteModule"
@@ -8,22 +27,6 @@ class NoteModule(BawtM2):
             'nick': '%(nick)s'}
     note_file = "note_data"
 
-    def Notes(self):
-        try:
-            out = []
-            for i in open(self.note_file, 'r').readlines():
-                line = i.replace("\r", "").replace("\n", "")
-                out.append(line)
-
-            yield out
-
-            fh = open(self.note_file, 'w')
-            for i in out:
-                fh.write(i + '\n')
-
-        except IOError:
-            pass
-
     def reply(self, msg, say):
         self.parent.privmsg(msg.replyto, "%s: %s" % (msg.nick, say))
 
@@ -31,7 +34,7 @@ class NoteModule(BawtM2):
         if not self.auth(msg):
             self.parent.privmsg(msg.replyto, "%s: I don't know you." % (msg.nick))
             return
-        with self.Notes() as notes:
+        with Notes(self.note_file) as notes:
             argv = msg.data_segment.split(" ")
             if self.m.group(2) == "store":
                 note = " ".join(argv[1:])
