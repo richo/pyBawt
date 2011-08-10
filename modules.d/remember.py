@@ -1,4 +1,4 @@
-
+import webutils as wb
 
 class NoteModule(BawtM2):
     """A module for the storage and retrieval of notes"""
@@ -53,9 +53,12 @@ class NoteModule(BawtM2):
             self.notes = []
             self.reply(msg, "Message list cleared.")
         elif self.m.group(2) == "list":
-            if self.notes:
-                for i in self.notes:
-                    self.reply(msg, i)
-            else:
+            if not self.notes:
                 self.reply(msg, "I pity the fool who has no notes")
+                return
+            try:
+                note_data = "\n".join(self.notes)
+                self.reply(msg, wb.publish(note_data))
+            except wb.PublicationError:
+                self.reply("Couldn't publish note data")
 
