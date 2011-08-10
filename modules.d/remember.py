@@ -9,7 +9,7 @@ class NoteModule(BawtM2):
     note_file = "note_data"
 
     @staticmethod
-    def Notes()
+    def Notes():
         try:
             out = []
             for i in open(self.note_file, 'r').readlines():
