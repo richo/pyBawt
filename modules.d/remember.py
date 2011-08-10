@@ -40,11 +40,14 @@ class NoteModule(BawtM2):
         argv = msg.data_segment.split(" ")
         if self.m.group(2) == "store":
             note = argv[1:].join(" ")
-            if note and note not in self.notes:
-                self.notes.append(note)
-                self.reply(msg, "Stored.")
+            if note:
+                if note in self.notes:
+                    self.reply(msg, "Message already stored")
+                else:
+                    self.notes.append(note)
+                    self.reply(msg, "Stored.")
             else:
-                self.reply(msg, "Message already present, or nonexistant.")
+                self.reply(msg, "!store <note>")
         elif self.m.group(2) == "clear":
             self.notes = []
             self.reply(msg, "Message list cleared.")
