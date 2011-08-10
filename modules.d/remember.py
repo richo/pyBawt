@@ -55,5 +55,5 @@ class NoteModule(BawtM2):
                     note_data = "\n".join(notes)
                     self.reply(msg, wb.publish(note_data))
                 except wb.PublicationError:
-                    self.reply("Couldn't publish note data")
+                    self.reply(msg, "Couldn't publish note data")
 
