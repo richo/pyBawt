@@ -1,4 +1,4 @@
-
+import webutils as wb
 
 class NoteModule(BawtM2):
     """A module for the storage and retrieval of notes"""
@@ -22,6 +22,7 @@ class NoteModule(BawtM2):
             pass
 
     def write_notes(self):
+        # We shoudl append/clobber instead of rewriting
         try:
             fh = open(self.note_file, 'w')
             for i in self.notes:
@@ -49,13 +50,18 @@ class NoteModule(BawtM2):
                     self.reply(msg, "Stored.")
             else:
                 self.reply(msg, "!store <note>")
+            self.write_notes()
         elif self.m.group(2) == "clear":
             self.notes = []
             self.reply(msg, "Message list cleared.")
+            self.write_notes()
         elif self.m.group(2) == "list":
-            if self.notes:
-                for i in self.notes:
-                    self.reply(msg, i)
-            else:
+            if not self.notes:
                 self.reply(msg, "I pity the fool who has no notes")
+                return
+            try:
+                note_data = "\n".join(self.notes)
+                self.reply(msg, wb.publish(note_data))
+            except wb.PublicationError:
+                self.reply("Couldn't publish note data")
 
