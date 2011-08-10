@@ -53,5 +53,5 @@ class NoteModule(BawtM2):
                 for i in self.notes:
                     self.reply(msg, i)
             else:
-                self.reply("I pity the fool who has no notes")
+                self.reply(msg, "I pity the fool who has no notes")
 
