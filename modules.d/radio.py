@@ -55,6 +55,8 @@ class RadioModule(BawtM2):
     def handle_topic(self, msg):
         """This will get confused if there aren't two sets of || in the topic
         So we just drop it if that happens"""
+        # Radio topic updating disabled until radio comes back up
+        return
         if msg.nick == self.parent.nick:
             # Otherwise we'll be here all day.
             return
