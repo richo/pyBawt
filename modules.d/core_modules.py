@@ -166,4 +166,26 @@ class DumpModule(BawtM2):
     def handle_notice(self, msg):
         msg.dump()
 
-
+class AuthModule(BawtM2):
+    _name = "AuthModule"
+    _commands = ['auth', 'status']
+    privmsg_re = "^!(%(commands)s)" % {'commands': "|".join(_commands)}
+    def handle_privmsg(self, msg):
+        # TODO Global is_private
+        argv = msg.data_segment.split(" ")
+        if argv[0] == "!auth":
+            if len(argv) == 1 or not message.replyto.startswith("#"):
+                self.parent.privmsg(msg.replyto,
+                        "%s: Usage /msg %s !auth [password]" %
+                        (msg.nick, self.parent.nick))
+                return
+            if self.parent.Authenticator.try_auth(argv[1]):
+                self.parent.privmsg(msg.replyto, "This has been a triumph")
+            else:
+                self.parent.privmsg(msg.replyto, "You have chosen poorly")
+            return
+        elif argv[0] == "!status":
+            if self.parent.Authenticator.authed(msg.nick):
+                self.parent.privmsg(msg.replyto, "You are identified")
+            else:
+                self.parent.privmsg(msg.replyto, "You are not identified")
