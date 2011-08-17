@@ -10,6 +10,7 @@ regen_modules.rebuild_bModules()
 import bModules
 import config
 import signal
+import auth
 
 class ModuleError(Exception):
     pass
@@ -179,6 +180,9 @@ class chatnet(object):
         # Load up data relevant to Auth module
         self.auth_host = config.auth_host
         self.auth_hash = config.auth_hash
+        # Create auth handler
+        # TODO hashes shouldbe a db or somesuch
+        self.authenticator = auth.Authenticator(auth_hash = self.auth_hash, valid_host = self.auth_host)
     
     def recv_wait(self):
 #This method pulls data back from the server and queues it for processing.
