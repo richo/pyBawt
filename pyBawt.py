@@ -11,8 +11,7 @@ import time
 import sys
 import os
 import random
-import channels
-import networks
+import config
 import bModules
 # Have a crack at sweet argparsing
 
@@ -23,25 +22,14 @@ try:
 
     # TODO Validate the host option agains networks.networks.key()
     parser = argparse.ArgumentParser(description='IRC bot written in python')
-    parser.add_argument('host', nargs='?', default=networks.default,
-            help="IRC host to connect to, defaults to %(host)s" % {"host": networks.default})
-    parser.add_argument("-n", "--nick", dest='nick', action='store',
-            default='pyBawt',
-            help='define nick to use')
     parser.add_argument("-d", "--debug", dest='debug', action='store_true',
             default=False,
             help='include debug data, also crash violently on error')
     args = parser.parse_args()
 
-    network = networks.networks[args.host]
-    nick = args.nick
     debug = args.debug
 except ImportError:
 # no argparse, probably py2.6
-    if len(sys.argv) < 2:
-        network = networks.networks[networks.default]
-    else:
-        network = networks.networks[sys.argv[1]]
     debug = False
     # TODO - something clever here to make args still work
 
@@ -49,9 +37,9 @@ def restart_stub():
     net.quit("Going down for restart")
     os.execv(sys.executable, [sys.executable] + sys.argv)
 
-net = ircSocket.chatnet(network.host, port=network.port, use_ssl=network.ssl)
+net = ircSocket.chatnet(config.host, port=config.port, use_ssl=config.ssl)
 # Ugly hax, port to argparse if we see any more nicks
-nick = network.nick
+nick = config.nick
 net.identify(nick)
 net.auth_self('nickserv', 'b@dpass')
 net._debug = True
@@ -66,7 +54,7 @@ except IOError:
     exit()
 
 try:
-    for i in channels.channels[network.host]:
+    for i in config.channels:
         net.join(i)
     while True:
         try:
