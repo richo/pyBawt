@@ -31,4 +31,6 @@ It is managed by AuthModule which tracks the server messages
         return nick in self.authenticated
 
 
+    # TODO
+    # Authentication decorator
 
