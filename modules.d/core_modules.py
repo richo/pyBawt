@@ -95,7 +95,7 @@ class DebugModule(BawtM2):
     privmsg_re = "^!(%(commands)s)" % {'commands': "|".join(_commands)}
     _name = "DebugModule"
     def handle_privmsg(self, msg):
-        if not authOK(msg):
+        if not self.auth(msg):
             self.parent.privmsg(msg.replyto, "%s: I don't know you." % (msg.nick))
             return
         argv = msg.data_segment.split(" ")
@@ -121,7 +121,7 @@ class AddModule(BawtM2):
     privmsg_re = "^(!|%(nick)s:\s?)(add) ([^ ]*)"
     _name = "AddModule"
     def handle_privmsg(self, msg):
-        if not authOK(msg):
+        if not self.auth(msg):
             self.parent.privmsg(msg.replyto, "%s: I don't know you." % (msg.nick))
             return
         mod = self.m.group(3)
@@ -138,7 +138,7 @@ class ChanModule(BawtM2):
     privmsg_re = "^!(%(commands)s)" % {'commands': "|".join(_commands)}
     _name = "ChanModule"
     def handle_privmsg(self, msg):
-        if not authOK(msg):
+        if not self.auth(msg):
             self.parent.privmsg(msg.replyto, "%s: I don't know you." % (msg.nick))
             return
         argv = msg.data_segment.split(" ")
@@ -185,7 +185,7 @@ class AuthModule(BawtM2):
                 self.parent.privmsg(msg.replyto, "You have chosen poorly")
             return
         elif argv[0] == "!status":
-            if self.parent.Authenticator.authed(msg.nick):
+            if self.auth(msg.nick):
                 self.parent.privmsg(msg.replyto, "You are identified")
             else:
                 self.parent.privmsg(msg.replyto, "You are not identified")

@@ -22,26 +22,6 @@ def get_help(mdl):
 # CORE
 #-----
 
-def authOK(msg):
-    # This is a universal authentication module.
-    # It needs some form of safeguard (maybe a hash of somekind) to prevent it
-    # being rebound by hax
-    if msg.host == "staffers.psych0tik.net":
-        # XXX This needs to be workable on other networks. AuthModule perhaps?
-        return True
-    else:
-        return False
-
-def auth_factory(net, channel):
-    def _(msg):
-        if net.auth_host == msg.host:
-            # Users host matches an auth host
-            return True
-        else:
-            return False
-    return _
-
-
 class Restart(Exception):
     pass
 class StopHandling(Exception):
@@ -103,7 +83,7 @@ class BawtM2(object):
         # Message. I fully expect this to be overridden.
 
         # Or against a static hash
-        self.auth = auth_factory(self.parent, self.channel)
+        self.auth = self.parent.Authenticator.authed
         self.on_load()
 
     def __repr__(self):
