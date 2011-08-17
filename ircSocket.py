@@ -67,6 +67,7 @@ RE_INFO_MATCH = re.compile(r":([A-Za-z0-9\[\]\^\\~`_]+)!([~A-Za-z0-9]+)@([A-Za-z
 # This should both be a global AND a classmethod..
 def is_private(msg):
     try:
+        # TODO - Valid prefixes that I know of are # & !
         return not msg.address_segment.startswith("#")
     except:
         # Moar hax, don't test with objects without an address
