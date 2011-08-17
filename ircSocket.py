@@ -8,7 +8,7 @@ import re
 import regen_modules
 regen_modules.rebuild_bModules()
 import bModules
-import networks
+import config
 import signal
 
 class ModuleError(Exception):
@@ -177,10 +177,8 @@ class chatnet(object):
                 'JOIN': self.handle_join
                 }
         # Load up data relevant to Auth module
-        if self.host in networks.networks:
-            a = networks.networks[self.host]
-            self.auth_host = a.auth_host
-            self.auth_hash = a.auth_hash
+        self.auth_host = config.auth_host
+        self.auth_hash = config.auth_hash
     
     def recv_wait(self):
 #This method pulls data back from the server and queues it for processing.
