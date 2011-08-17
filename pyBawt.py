@@ -19,8 +19,6 @@ import bModules
 
 try:
     import argparse
-
-    # TODO Validate the host option agains networks.networks.key()
     parser = argparse.ArgumentParser(description='IRC bot written in python')
     parser.add_argument("-d", "--debug", dest='debug', action='store_true',
             default=False,
