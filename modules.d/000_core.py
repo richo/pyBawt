@@ -5,7 +5,7 @@ import time
 import ourgit
 import os
 import sys
-import atexit
+import logging
 
 VERSION="$Rev: 1252 $".split(" ")[1]
 
@@ -157,12 +157,10 @@ class BawtM2(object):
         try:
             self.handlers[msg.event](msg)
         except KeyError:
-            # No handler for this event
-            pass
+            logging.fixme("Module %s attached a handler to an event it couldn't handle" % (self._name))
 
     def handle_privmsg(self, msg):
         self.noop()
-
 
     def handle_kick(self, msg):
         self.noop()
