@@ -1,6 +1,7 @@
 import hashlib
 import pickle
 import atexit
+import logging
 
 AUTH_FILE_NAME="authen.db"
 
@@ -12,6 +13,7 @@ It is managed by AuthModule which tracks the server messages
     def __init__(self, auth_hash='', valid_host=''):
         self.auth_hash = auth_hash
         self.valid_host = valid_host
+        # TODO Case insensitive
         self.authenticated = []
         self.load()
         atexit.register(self.save)
@@ -34,8 +36,8 @@ It is managed by AuthModule which tracks the server messages
         except ValueError:
             return count > 0
 
-    def authed(self, msg):
-        return msg.nick in self.authenticated
+    def authed(self, nick):
+        return nick in self.authenticated
 
     def save(self):
         pickle.dump(self.auth_data, open(AUTH_FILE_NAME, 'w'))

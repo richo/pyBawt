@@ -5,7 +5,7 @@ ssl             =   True
 nick            =   'pyBawt'
 port            =   6697
 auth_host       =   'staffers.psych0tik.net'
-auth_hash       =   '965cc7027c64265a2e4bd602dfcc85b1'
+auth_hash       =   '7620f958a8ba0ff91097ba1f2bb93072'
 channels =      [   '#rawptest',
                     '#psych0tik',
                     '#basic24'
