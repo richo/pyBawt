@@ -80,7 +80,7 @@ except ircSocket.IrcTerminated:
 except Exception:
     # TODO - Checkout from stable git branch
     if debug: # Debug hook? Either way it's stupid.
-        logging.error("Restarting at %s bailing out" % time.asctime())
+        logging.error("Shutting down at %s bailing out" % time.asctime())
         raise
     else:
         logging.error("Restarting at %s, restarting" % time.asctime())
