@@ -194,8 +194,10 @@ class AuthModule(BawtM2):
                         (msg.nick, self.parent.nick))
                 return
             if self.parent.authenticator.try_auth(msg, argv[1]):
+                logging.info("%s authenticated successfully" % msg.nick)
                 self.parent.privmsg(msg.replyto, "This has been a triumph")
             else:
+                logging.info("%s has failed to authenticated" % msg.nick)
                 self.parent.privmsg(msg.replyto, "You have chosen poorly")
             return
         elif argv[0] == "!status":
