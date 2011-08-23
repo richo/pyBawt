@@ -83,7 +83,9 @@ class BawtM2(object):
         # Message. I fully expect this to be overridden.
 
         # Or against a static hash
-        self.auth = self.parent.Authenticator.authed
+        # XXX Potentially allocates stale handles
+        self.auth = self.parent.authenticator.authed
+        self.revoke_auth = self.parent.authenticator.revoke_auth
         self.on_load()
 
     def __repr__(self):

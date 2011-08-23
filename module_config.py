@@ -1,7 +1,7 @@
 # IZ FINAL
 
 modules = OurModules()
-modules["default"] = [ AddModule, HelpModule, SnackModule ]
+modules["default"] = [ AddModule, HelpModule, SnackModule, AuthModule ]
 modules["#rawptest"] = [ ChanModule, AdminModule, SourceModule, GreetModule, GitModule ]
 modules["#psych0tik"] = [ GreetModule, RadioModule ]
 modules["#hbh"] = [ LinkModule ]

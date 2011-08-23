@@ -5,6 +5,7 @@ import os
 import sys
 import atexit
 import traceback
+import lib
 
 VERSION="$Rev: 1252 $".split(" ")[1]
 
@@ -166,10 +167,21 @@ class DumpModule(BawtM2):
     def handle_notice(self, msg):
         msg.dump()
 
+class ChannelMapping(mapping.Mapping):
+    def refcount(self, nick, insensitive=True):
+        count = 0
+        if insensitive:
+            nick = nick.lower()
+        for i in self.itervalues():
+            # Not actually respecting insensitiv
+            j.map(lambda n: if n.lower() == nick: refcount += 1)
+        return refcount
+
 class AuthModule(BawtM2):
     _name = "AuthModule"
     _commands = ['auth', 'status']
     privmsg_re = "^!(%(commands)s)" % {'commands': "|".join(_commands)}
+    visible = ChannelMapping()
     def handle_privmsg(self, msg):
         # TODO Global is_private
         argv = msg.data_segment.split(" ")
@@ -189,3 +201,11 @@ class AuthModule(BawtM2):
                 self.parent.privmsg(msg.replyto, "You are identified")
             else:
                 self.parent.privmsg(msg.replyto, "You are not identified")
+    def handle_join(self, msg):
+        self.mapping[msg.channel].append(msg.nick)
+    def handle_part(self, msg):
+        del self.mapping[msg.channel]['nick']
+        if self.mapping.refcount() == 0:
+            self.parent.revoke_auth(msg.nick)
+
+
