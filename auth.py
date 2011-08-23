@@ -13,12 +13,8 @@ It is managed by AuthModule which tracks the server messages
         self.auth_hash = auth_hash
         self.valid_host = valid_host
         self.authenticated = []
-        atexit.register(self.writeout)
-        try:
-            fh = open(AUTH_FILE_NAME, 'r')
-            self.auth_data = pickle.load(fh)
-        except IOError:
-            self.auth_data = {}
+        self.load()
+        atexit.register(self.save)
 
     def try_auth(self, msg, password):
         if msg.nick in self.authenticated:
@@ -40,8 +36,14 @@ It is managed by AuthModule which tracks the server messages
     def authed(self, msg):
         return msg.nick in self.authenticated
 
-    def writeout(self):
+    def save(self):
         pickle.dump(self.auth_data, open(AUTH_FILE_NAME, 'w'))
+    def load(self):
+        try:
+            fh = open(AUTH_FILE_NAME, 'r')
+            self.auth_data = pickle.load(fh)
+        except IOError:
+            self.auth_data = {}
 
     # TODO
     # Authentication decorator
