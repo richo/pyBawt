@@ -1,3 +1,4 @@
 bModules.py
 *.pyc
-note_data
+note_data*
+authen.db
