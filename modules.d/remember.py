@@ -25,7 +25,7 @@ class NoteModule(BawtM2):
     _commands = ['store', 'clear', 'list']
     privmsg_re = "^(!|%(nick)s:\s?)(%(commands)s)" % {'commands': "|".join(_commands),
             'nick': '%(nick)s'}
-    note_file = "note_data"
+    note_file = "note_data_%s"
 
     def reply(self, msg, say):
         self.parent.privmsg(msg.replyto, "%s: %s" % (msg.nick, say))
@@ -34,7 +34,7 @@ class NoteModule(BawtM2):
         if not self.auth(msg):
             self.parent.privmsg(msg.replyto, "%s: I don't know you." % (msg.nick))
             return
-        with Notes(self.note_file) as notes:
+        with Notes(self.note_file % msg.nick) as notes:
             argv = msg.data_segment.split(" ")
             if self.m.group(2) == "store":
                 note = " ".join(argv[1:])
