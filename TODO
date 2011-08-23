@@ -21,3 +21,8 @@ RADIO!!
 Infrastructure for retrieving ops
 
 Decide how ircd/network agnostic I want this bot. I'm hoping to keep everything psych0tik agnostic in the modules.d structure. Even then I think I need to move the core stuff out.
+
+in the auth branch
+------------------
+
+create a join hook, when nick=self, index the nicks in that channel and store them with the auth data

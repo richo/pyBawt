@@ -13,6 +13,10 @@ import os
 import random
 import config
 import bModules
+import logging
+
+logging.info("pyBawt started")
+
 # Have a crack at sweet argparsing
 
 # TODO - hax involving stdout for debugging
@@ -61,8 +65,11 @@ try:
             pass
         net.dump_queue()
 except KeyboardInterrupt:
+    logging.error("Shutting down due to user intervention")
     net.quit("Killed from terminal")
 except bModules.Restart:
+    # TODO Include the user who did this
+    logging.error("Restarting due to user intervention")
     restart_stub()
 except ircSocket.IrcDisconnected:
     if ircSocket.should_reconnect():
@@ -73,7 +80,9 @@ except ircSocket.IrcTerminated:
 except Exception:
     # TODO - Checkout from stable git branch
     if debug: # Debug hook? Either way it's stupid.
+        logging.error("Shutting down and bailing out")
         raise
     else:
+        logging.error("Exception caught, restarting")
         restart_stub()
 

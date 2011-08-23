@@ -5,6 +5,8 @@ import os
 import sys
 import atexit
 import traceback
+from lib import *
+import logging
 
 VERSION="$Rev: 1252 $".split(" ")[1]
 
@@ -166,22 +168,36 @@ class DumpModule(BawtM2):
     def handle_notice(self, msg):
         msg.dump()
 
+class ChannelMapping(Mapping):
+    def refcount(self, nick, insensitive=True):
+        count = 0
+        if insensitive:
+            nick = nick.lower()
+        for i in self.itervalues():
+            # Not actually respecting insensitiv
+            if nick in map(lambda n: n.lower, i):
+                count += 1
+        return count
+
 class AuthModule(BawtM2):
     _name = "AuthModule"
     _commands = ['auth', 'status']
     privmsg_re = "^!(%(commands)s)" % {'commands': "|".join(_commands)}
+    visible = ChannelMapping()
     def handle_privmsg(self, msg):
         # TODO Global is_private
         argv = msg.data_segment.split(" ")
         if argv[0] == "!auth":
-            if len(argv) == 1 or not message.replyto.startswith("#"):
+            if len(argv) == 1 or not msg.is_private():
                 self.parent.privmsg(msg.replyto,
                         "%s: Usage /msg %s !auth [password]" %
                         (msg.nick, self.parent.nick))
                 return
-            if self.parent.Authenticator.try_auth(argv[1]):
+            if self.parent.authenticator.try_auth(msg, argv[1]):
+                logging.info("%s authenticated successfully" % msg.nick)
                 self.parent.privmsg(msg.replyto, "This has been a triumph")
             else:
+                logging.info("%s has failed to authenticated" % msg.nick)
                 self.parent.privmsg(msg.replyto, "You have chosen poorly")
             return
         elif argv[0] == "!status":
@@ -189,3 +205,15 @@ class AuthModule(BawtM2):
                 self.parent.privmsg(msg.replyto, "You are identified")
             else:
                 self.parent.privmsg(msg.replyto, "You are not identified")
+    def handle_join(self, msg):
+        logging.info("Sighting %s" % msg.nick)
+        self.visible[msg.address_segment].append(msg.nick)
+    def handle_part(self, msg):
+        logging.info("Losing sight of %s" % msg.nick)
+        try:
+            self.visible[msg.address_segment].remove(msg.nick)
+        except ValueError:
+            logging.warn("%s left %s without having been seen, testing auth anyway" % (msg.nick, msg.address_segment))
+        if self.visible.refcount(msg.nick) == 0:
+            logging.info("Can't see %s; deauthing" % msg.nick)
+            self.parent.authenticator.revoke_auth(msg.nick)

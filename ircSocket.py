@@ -65,14 +65,6 @@ _load_modules()
 RE_NICK_MATCH = re.compile(r":([A-Za-z0-9\[\]\^\\~`_]+)!([~A-Za-z0-9]+)@([A-Za-z0-9_\.-]+)")
 RE_INFO_MATCH = re.compile(r":([A-Za-z0-9\[\]\^\\~`_]+)!([~A-Za-z0-9]+)@([A-Za-z0-9_\.-]+)")
 
-# This should both be a global AND a classmethod..
-def is_private(msg):
-    try:
-        return not msg.address_segment.startswith("#")
-    except:
-        # Moar hax, don't test with objects without an address
-        return False
-
 class irc_data(object):
     def __init__(self, data):
         self.data = data
@@ -130,18 +122,26 @@ class Message(object):
         # Hanlder hax
         if self.event == "MODE":
             self.address_segment = self.data_segment.split(" ", 1)[0]
-        if is_private(self):
+        if self.is_private():
             self.replyto = self.nick
             self.origin = 'privmsg'
         else:
             self.replyto = self.address_segment
             self.origin = self.address_segment
 
-        def parse_modes(self):
-            if self.event != "MODE":
-                return None
-            channel, modes, nicks = self.data_segment.split(" ", 2)
-            return (channel, modes, nicks)
+    def parse_modes(self):
+        if self.event != "MODE":
+            return None
+        channel, modes, nicks = self.data_segment.split(" ", 2)
+        return (channel, modes, nicks)
+    def is_private(self):
+        # This needs to be more global:
+        try:
+            if not self.address_segment[0] in ["!", "&", "#"]:
+                return True
+        except TypeError:
+            pass
+        return False
 
     def __str__(self):
         return self.msg
@@ -162,6 +162,11 @@ class chatnet(object):
         self.auth_hash = ''
         self.nick = ""
         self._debug = False
+
+        self.auth_host = config.auth_host
+        self.auth_hash = config.auth_hash
+        self.authenticator = auth.Authenticator(auth_hash = self.auth_hash, valid_host = self.auth_host)
+
         self.ready_signal = IRC_MOTD_START
         self.ready = False
         self.data = ""
@@ -177,12 +182,6 @@ class chatnet(object):
         self.event_handlers = {
                 'JOIN': self.handle_join
                 }
-        # Load up data relevant to Auth module
-        self.auth_host = config.auth_host
-        self.auth_hash = config.auth_hash
-        # Create auth handler
-        # TODO hashes shouldbe a db or somesuch
-        self.authenticator = auth.Authenticator(auth_hash = self.auth_hash, valid_host = self.auth_host)
     
     def recv_wait(self):
 #This method pulls data back from the server and queues it for processing.
