@@ -1,3 +1,5 @@
+import time
+
 LOGFILE='pyBawt.log'
 
 def with_log(func):
@@ -13,14 +15,17 @@ def log(msg, fh):
         msg += "\n"
     fh.write(msg)
 
+def fmt(msg):
+    return "%s | %s" % (time.asctime(), msg)
+
 def error(msg):
-    log("E: %s" % msg)
+    log("E: %s" % fmt(msg))
 
 def info(msg):
-    log("I: %s" % msg)
+    log("I: %s" % fmt(msg))
 
 def warn(msg):
-    log("W: %s" % msg)
+    log("W: %s" % fmt(msg))
 
 def fixme(msg):
-    log("X: %s" % msg)
+    log("X: %s" % fmt(msg))
