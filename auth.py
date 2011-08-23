@@ -2,6 +2,11 @@ import hashlib
 import pickle
 import atexit
 import logging
+from lib import *
+
+class AuthMapping(Mapping):
+    missing_elements = dict
+
 
 AUTH_FILE_NAME="authen.db"
 
@@ -15,7 +20,7 @@ It is managed by AuthModule which tracks the server messages
         self.valid_host = valid_host
         # TODO Case insensitive
         self.authenticated = []
-        self.auth_data = {}
+        self.auth_data = Mapping()
         self.load()
         atexit.register(self.save)
 
@@ -42,6 +47,11 @@ It is managed by AuthModule which tracks the server messages
 
     def authed(self, msg):
         return msg.nick in self.authenticated
+
+    def retrieve(self, msg, key):
+        return self.auth_data[msg.nick.lower()][key]
+    def store(self, msg, key, value):
+        self.auth_data[msg.nick.lower()][key] = value
 
     def save(self):
         pickle.dump(self.auth_data, open(AUTH_FILE_NAME, 'w'))
