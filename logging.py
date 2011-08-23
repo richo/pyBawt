@@ -1,7 +1,14 @@
 LOGFILE='pyBawt.log'
-fh = open(LOGFILE, 'a')
 
-def log(msg):
+def with_log(func):
+    def _(msg):
+        fh = open(LOGFILE, 'a')
+        func(msg, fh)
+        fh.close()
+    return _
+
+@with_log
+def log(msg, fh):
     if not msg.endswith("\n"):
         msg += "\n"
     fh.write(msg)
