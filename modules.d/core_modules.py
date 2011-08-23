@@ -177,7 +177,7 @@ class ChannelMapping(Mapping):
             # Not actually respecting insensitiv
             if nick in map(lambda n: n.lower, i):
                 count += 1
-        return refcount
+        return count
 
 class AuthModule(BawtM2):
     _name = "AuthModule"
