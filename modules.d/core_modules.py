@@ -6,6 +6,7 @@ import sys
 import atexit
 import traceback
 from lib import *
+import logging
 
 VERSION="$Rev: 1252 $".split(" ")[1]
 
@@ -203,10 +204,17 @@ class AuthModule(BawtM2):
             else:
                 self.parent.privmsg(msg.replyto, "You are not identified")
     def handle_join(self, msg):
-        self.mapping[msg.channel].append(msg.nick)
+        msg.dump()
+        logging.info("Sighting %s" % msg.nick)
+        self.visible[msg.address_segment].append(msg.nick)
     def handle_part(self, msg):
-        del self.mapping[msg.channel]['nick']
-        if self.mapping.refcount() == 0:
-            self.parent.revoke_auth(msg.nick)
+        logging.info("Losing sight of %s" % msg.nick)
+        try:
+            self.visible[msg.address_segment].remove(msg.nick)
+        except ValueError:
+            logging.warn("%s left %s without having been seen, testing auth anyway" % (msg.nick, msg.address_segment))
+        if self.visible.refcount(msg.nick) == 0:
+            print "Can't see %s; deauthing" % msg.nick
+            self.visible.revoke_auth(msg.nick)
 
 
