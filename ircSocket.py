@@ -139,9 +139,9 @@ class Message(object):
         try:
             if not self.address_segment[0] in ["!", "&", "#"]:
                 return True
-        except:
+        except TypeError:
             pass
-        return True
+        return False
 
     def __str__(self):
         return self.msg
