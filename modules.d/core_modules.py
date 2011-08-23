@@ -5,7 +5,7 @@ import os
 import sys
 import atexit
 import traceback
-import lib
+from lib import *
 
 VERSION="$Rev: 1252 $".split(" ")[1]
 
@@ -167,14 +167,15 @@ class DumpModule(BawtM2):
     def handle_notice(self, msg):
         msg.dump()
 
-class ChannelMapping(mapping.Mapping):
+class ChannelMapping(Mapping):
     def refcount(self, nick, insensitive=True):
         count = 0
         if insensitive:
             nick = nick.lower()
         for i in self.itervalues():
             # Not actually respecting insensitiv
-            j.map(lambda n: if n.lower() == nick: refcount += 1)
+            if nick in map(lambda n: n.lower):
+                count += 1
         return refcount
 
 class AuthModule(BawtM2):
