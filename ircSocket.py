@@ -162,6 +162,11 @@ class chatnet(object):
         self.auth_hash = ''
         self.nick = ""
         self._debug = False
+
+        self.auth_host = config.auth_host
+        self.auth_hash = config.auth_hash
+        self.authenticator = auth.Authenticator(auth_hash = self.auth_hash, valid_host = self.auth_host)
+
         self.ready_signal = IRC_MOTD_START
         self.ready = False
         self.data = ""
@@ -177,12 +182,6 @@ class chatnet(object):
         self.event_handlers = {
                 'JOIN': self.handle_join
                 }
-        # Load up data relevant to Auth module
-        self.auth_host = config.auth_host
-        self.auth_hash = config.auth_hash
-        # Create auth handler
-        # TODO hashes shouldbe a db or somesuch
-        self.authenticator = auth.Authenticator(auth_hash = self.auth_hash, valid_host = self.auth_host)
     
     def recv_wait(self):
 #This method pulls data back from the server and queues it for processing.

@@ -192,7 +192,7 @@ class AuthModule(BawtM2):
                         "%s: Usage /msg %s !auth [password]" %
                         (msg.nick, self.parent.nick))
                 return
-            if self.parent.Authenticator.try_auth(argv[1]):
+            if self.parent.authenticator.try_auth(argv[1]):
                 self.parent.privmsg(msg.replyto, "This has been a triumph")
             else:
                 self.parent.privmsg(msg.replyto, "You have chosen poorly")
