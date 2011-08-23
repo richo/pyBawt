@@ -213,7 +213,5 @@ class AuthModule(BawtM2):
         except ValueError:
             logging.warn("%s left %s without having been seen, testing auth anyway" % (msg.nick, msg.address_segment))
         if self.visible.refcount(msg.nick) == 0:
-            print "Can't see %s; deauthing" % msg.nick
-            self.visible.revoke_auth(msg.nick)
-
-
+            logging.info("Can't see %s; deauthing" % msg.nick)
+            self.parent.authenticator.revoke_auth(msg.nick)
