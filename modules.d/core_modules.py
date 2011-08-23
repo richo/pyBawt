@@ -175,7 +175,7 @@ class ChannelMapping(Mapping):
             nick = nick.lower()
         for i in self.itervalues():
             # Not actually respecting insensitiv
-            if nick in map(lambda n: n.lower):
+            if nick in map(lambda n: n.lower, i):
                 count += 1
         return refcount
 
