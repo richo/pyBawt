@@ -36,8 +36,8 @@ It is managed by AuthModule which tracks the server messages
         except ValueError:
             return count > 0
 
-    def authed(self, nick):
-        return nick in self.authenticated
+    def authed(self, msg):
+        return msg.nick in self.authenticated
 
     def save(self):
         pickle.dump(self.auth_data, open(AUTH_FILE_NAME, 'w'))
