@@ -188,7 +188,7 @@ class AuthModule(BawtM2):
         # TODO Global is_private
         argv = msg.data_segment.split(" ")
         if argv[0] == "!auth":
-            if len(argv) == 1 or not message.replyto.startswith("#"):
+            if len(argv) == 1 or not msg.replyto.startswith("#"):
                 self.parent.privmsg(msg.replyto,
                         "%s: Usage /msg %s !auth [password]" %
                         (msg.nick, self.parent.nick))

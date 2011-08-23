@@ -19,6 +19,7 @@ It is managed by AuthModule which tracks the server messages
     def try_auth(self, msg, password):
         if msg.nick in self.authenticated:
             return True
+        # Max kludge per user password
         if hashlib.md5(password).hexdigest() == self.auth_hash:
             self.authenticated.append(msg.nick)
             return True
