@@ -1,5 +1,5 @@
 LOGFILE='pyBawt.log'
-fh = open(LOGFILE, '-a')
+fh = open(LOGFILE, 'a')
 
 def log(msg):
     if not msg.endswith("\n"):
