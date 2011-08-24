@@ -31,13 +31,20 @@ class NoteModule(BawtM2):
         self.parent.privmsg(msg.replyto, "%s: %s" % (msg.nick, say))
 
     def handle_privmsg(self, msg):
-        if not self.auth(msg):
-            self.parent.privmsg(msg.replyto, "%s: I don't know you." % (msg.nick))
-            return
+        if self.auth(msg):
+            limit = 5000
+        else
+            limit = 25
         with Notes(self.note_file % msg.nick) as notes:
             argv = msg.data_segment.split(" ")
             if self.m.group(2) == "store":
+                if len(notes) > limit:
+                    self.reply("Too many notes stored")
+                    return
                 note = " ".join(argv[1:])
+                if len(note) > 256:
+                    self.reply("Note too long")
+                    return
                 if note:
                     if note in notes:
                         self.reply(msg, "Message already stored")
