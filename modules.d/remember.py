@@ -33,7 +33,7 @@ class NoteModule(BawtM2):
     def handle_privmsg(self, msg):
         if self.auth(msg):
             limit = 5000
-        else
+        else:
             limit = 25
         with Notes(self.note_file % msg.nick) as notes:
             argv = msg.data_segment.split(" ")
