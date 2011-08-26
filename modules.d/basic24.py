@@ -38,7 +38,7 @@ class Basic24Module(BawtM2):
         try:
             real_handle_privmsg(msg)
         except:
-            logging.error("Fell on it's arse with %s" % (msg.dump))
+            logging.error("Fell on it's arse with %s" % (msg.dump()))
             raise
 
     def real_handle_privmsg(self, msg):
