@@ -207,6 +207,8 @@ class AuthModule(BawtM2):
                 self.parent.privmsg(msg.replyto, "You are identified")
             else:
                 self.parent.privmsg(msg.replyto, "You are not identified")
+    def handle_nick(self, msg):
+        self.handle_part(msg)
     def handle_join(self, msg):
         logging.info("Sighting %s" % msg.nick)
         self.visible[msg.address_segment].append(msg.nick)
