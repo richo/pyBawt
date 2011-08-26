@@ -5,6 +5,7 @@ import hashlib
 import base64
 import binascii
 import logging
+import traceback
 class Basic24Module(BawtM2):
     success_re = re.compile(r"[\r\n]{1,2}\s+QUIT", re.I)
     _commands = ['help', 'say', 'md5', 'b64', 'sha1', 'rot47', 'hex', 'rot47crack', 'b64crack', 'hex2ascii' ]
@@ -36,9 +37,10 @@ class Basic24Module(BawtM2):
     
     def handle_privmsg(self, msg):
         try:
-            real_handle_privmsg(msg)
-        except:
-            logging.error("Fell on it's arse with %s" % (msg.dump()))
+            self.real_handle_privmsg(msg)
+        except Exception as exc:
+            logging.error("Fell on it's arse with %s" % (msg.dump))
+            #traceback.print_exception(*exc.args, file=logging.Writer(logging.error))
             raise
 
     def real_handle_privmsg(self, msg):
@@ -80,7 +82,7 @@ class Basic24Module(BawtM2):
                         self.write("How on earth did you get here")
                     # }}}
                 except:
-                    msg.dump()
+                    logging.error(msg.dump())
         except IndexError:
             self.write("That function requires an argument...")
     def do_help(self):

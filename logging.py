@@ -29,3 +29,10 @@ def warn(msg):
 
 def fixme(msg):
     log("X: %s" % fmt(msg))
+
+class Writer(object):
+    def __init__(self, func):
+        self.func = func
+    def write(self, msg):
+        self.func(msg)
+
