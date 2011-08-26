@@ -4,6 +4,7 @@
 import hashlib
 import base64
 import binascii
+import logging
 class Basic24Module(BawtM2):
     success_re = re.compile(r"[\r\n]{1,2}\s+QUIT", re.I)
     _commands = ['help', 'say', 'md5', 'b64', 'sha1', 'rot47', 'hex', 'rot47crack', 'b64crack', 'hex2ascii' ]
@@ -34,6 +35,13 @@ class Basic24Module(BawtM2):
                 %(47*2))) if c!=" "else " " for c in text])
     
     def handle_privmsg(self, msg):
+        try:
+            real_handle_privmsg(msg)
+        except:
+            logging.error("Fell on it's arse with %s" % (msg.dump))
+            raise
+
+    def real_handle_privmsg(self, msg):
         self.bind_write(msg)
         argv = msg.data_segment.split(" ", 1)
         try:

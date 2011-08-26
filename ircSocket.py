@@ -146,15 +146,15 @@ class Message(object):
     def __str__(self):
         return self.msg
     def dump(self):
-        print "Data Segment    : %s" % (self.data_segment)
-        print "Address Segment : %s" % (self.address_segment)
-        print "Source          : %s" % (self.source)
-        print "Event           : %s" % (self.event)
-        print "Data            : %s" % (self.data)
-        print "Nick            : %s" % (self.nick)
-        print "Name            : %s" % (self.name)
-        print "Host            : %s" % (self.host)
-        print "--"
+        return " ".join("Data Segment    : %s" % (self.data_segment),
+        "Address Segment : %s" % (self.address_segment),
+        "Source          : %s" % (self.source),
+        "Event           : %s" % (self.event),
+        "Data            : %s" % (self.data),
+        "Nick            : %s" % (self.nick),
+        "Name            : %s" % (self.name),
+        "Host            : %s" % (self.host),
+        "--")
 
 class chatnet(object):
     def __init__(self, host, port=6667, use_ssl=False):
