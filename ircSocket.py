@@ -62,8 +62,8 @@ def _load_modules():
 _load_modules()
 
 #RE_NICK_MATCH = re.compile(r":([A-Za-z0-9_-^`]+)!([A-Za-z0-9_-]+)@([A-Za-z0-9_\.-])")
-RE_NICK_MATCH = re.compile(r":([A-Za-z0-9\[\]\^\\~`_]+)!([~A-Za-z0-9]+)@([A-Za-z0-9_\.-]+)")
-RE_INFO_MATCH = re.compile(r":([A-Za-z0-9\[\]\^\\~`_]+)!([~A-Za-z0-9]+)@([A-Za-z0-9_\.-]+)")
+RE_NICK_MATCH = re.compile(r":([A-Za-z0-9\[\]\^\\~`_-]+)!([~A-Za-z0-9]+)@([A-Za-z0-9_\.-]+)")
+RE_INFO_MATCH = re.compile(r":([A-Za-z0-9\[\]\^\\~`_-]+)!([~A-Za-z0-9]+)@([A-Za-z0-9_\.-]+)")
 
 class irc_data(object):
     def __init__(self, data):
