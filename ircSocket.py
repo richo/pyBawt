@@ -146,7 +146,7 @@ class Message(object):
     def __str__(self):
         return self.msg
     def dump(self):
-        return " ".join("Data Segment    : %s" % (self.data_segment),
+        return " ".join(["Data Segment    : %s" % (self.data_segment),
         "Address Segment : %s" % (self.address_segment),
         "Source          : %s" % (self.source),
         "Event           : %s" % (self.event),
@@ -154,7 +154,7 @@ class Message(object):
         "Nick            : %s" % (self.nick),
         "Name            : %s" % (self.name),
         "Host            : %s" % (self.host),
-        "--")
+        "--"])
 
 class chatnet(object):
     def __init__(self, host, port=6667, use_ssl=False):
