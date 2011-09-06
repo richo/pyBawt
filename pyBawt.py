@@ -84,5 +84,6 @@ except Exception:
         raise
     else:
         logging.error("Exception caught, restarting")
+        logging.error(sys.exc_info())
         restart_stub()
 
