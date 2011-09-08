@@ -14,6 +14,7 @@ import random
 import config
 import bModules
 import logging
+import traceback
 
 logging.info("pyBawt started")
 
