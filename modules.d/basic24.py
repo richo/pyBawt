@@ -81,6 +81,8 @@ class Basic24Module(BawtM2):
                     else:
                         self.write("How on earth did you get here")
                     # }}}
+                except IndexError:
+                    raise
                 except:
                     logging.error(msg.dump())
         except IndexError:
