@@ -84,6 +84,8 @@ except Exception:
         raise
     else:
         logging.error("Exception caught, restarting")
-        logging.error(sys.exc_info())
+        exc = sys.exc_inf()
+        logging.error(exc)
+        traceback.print_exception(exc[2], file=logging.Writer(logging.error))
         restart_stub()
 
