@@ -24,7 +24,7 @@ def current_branch():
         return False
         
 def update_git():
-    data = oneline("git pull")
+    data = oneline("git pull --all")
     logging.info("Updated source to %s" % data)
     return data
     # TODO sanity check
