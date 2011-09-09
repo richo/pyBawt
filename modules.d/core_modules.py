@@ -130,7 +130,7 @@ class AddModule(BawtM2):
         mod = self.m.group(3)
         try:
             if self.parent.add_module(msg.origin.lower(), mod):
-                logging.info("%s loaded %s in %s" % (msg.nick, mod, msg.origin.lower()))
+                logging.info("%s loaded module %s in %s" % (msg.nick, mod, msg.origin.lower()))
                 self.parent.privmsg(msg.replyto, "done.")
             else:
                 self.parent.privmsg(msg.replyto, "No such module")
