@@ -27,8 +27,6 @@ class ModulesDidntLoadDueToSyntax(Exception):
     def __nonzero__(self):
         # This allows us to retain the logical "if status" test.
         return False
-class ModuleAlreadyLoaded(Exception):
-    pass
 
 def should_reconnect():
     """This hook lies in here because it'll give the rest of the structure a fairly central place
@@ -478,7 +476,7 @@ class Channel(object):
             for i in self.modules:
                 logging.fixme("Scanning %s against %s" % (i, mod))
                 if isinstance(i, mod):
-                    raise ModuleAlreadyLoaded
+                    raise bModules.ModuleAlreadyLoaded
             self.modules.append(mod(self.parent, self))
             return True
         except AttributeError:
