@@ -7,7 +7,6 @@ import atexit
 import traceback
 from lib import *
 import logging
-from ircSocket import ModuleAlreadyLoaded
 
 VERSION="$Rev: 1252 $".split(" ")[1]
 
