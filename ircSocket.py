@@ -473,12 +473,13 @@ class Channel(object):
 
     def add_module(self, module):
         # Really haxy test for modules already loaded
-        mod = getattr(bModules, module)
-        for i in self.modules:
-            if isinstance(i, mod):
-                raise ModuleAlreadyLoaded
         try:
-            self.modules.append(getattr(bModules, module)(self.parent, self))
+            mod = getattr(bModules, module)
+            for i in self.modules:
+                logging.fixme("Scanning %s against %s" % (i, mod))
+                if isinstance(i, mod):
+                    raise ModuleAlreadyLoaded
+            self.modules.append(mod(self.parent, self))
             return True
         except AttributeError:
             return False
