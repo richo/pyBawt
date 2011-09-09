@@ -11,6 +11,7 @@ import bModules
 import config
 import signal
 import auth
+import logging
 
 class ModuleError(Exception):
     pass
