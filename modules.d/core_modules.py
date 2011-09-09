@@ -7,6 +7,7 @@ import atexit
 import traceback
 from lib import *
 import logging
+from ircSocket import ModuleAlreadyLoaded
 
 VERSION="$Rev: 1252 $".split(" ")[1]
 
@@ -133,6 +134,9 @@ class AddModule(BawtM2):
                 self.parent.privmsg(msg.replyto, "done.")
             else:
                 self.parent.privmsg(msg.replyto, "No such module")
+        except ModuleAlreadyLoaded:
+                logging.info("%s attempted to load duplicate module %s in %s" % (msg.nick, mod, msg.origin.lower()))
+                self.parent.privmsg(msg.replyto, "Module already loaded in this context")
         except IndexError:
             self.parent.privmsg(msg.replyto, "Module?")
 
