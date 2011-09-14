@@ -11,6 +11,7 @@ import bModules
 import config
 import signal
 import auth
+import logging
 
 class ModuleError(Exception):
     pass
@@ -62,8 +63,8 @@ def _load_modules():
 _load_modules()
 
 #RE_NICK_MATCH = re.compile(r":([A-Za-z0-9_-^`]+)!([A-Za-z0-9_-]+)@([A-Za-z0-9_\.-])")
-RE_NICK_MATCH = re.compile(r":([A-Za-z0-9\[\]\^\\~`_]+)!([~A-Za-z0-9]+)@([A-Za-z0-9_\.-]+)")
-RE_INFO_MATCH = re.compile(r":([A-Za-z0-9\[\]\^\\~`_]+)!([~A-Za-z0-9]+)@([A-Za-z0-9_\.-]+)")
+RE_NICK_MATCH = re.compile(r":([A-Za-z0-9\[\]\^\\~`_-]+)!([~A-Za-z0-9]+)@([A-Za-z0-9_\.-]+)")
+RE_INFO_MATCH = re.compile(r":([A-Za-z0-9\[\]\^\\~`_-]+)!([~A-Za-z0-9]+)@([A-Za-z0-9_\.-]+)")
 
 class irc_data(object):
     def __init__(self, data):
@@ -146,15 +147,15 @@ class Message(object):
     def __str__(self):
         return self.msg
     def dump(self):
-        print "Data Segment    : %s" % (self.data_segment)
-        print "Address Segment : %s" % (self.address_segment)
-        print "Source          : %s" % (self.source)
-        print "Event           : %s" % (self.event)
-        print "Data            : %s" % (self.data)
-        print "Nick            : %s" % (self.nick)
-        print "Name            : %s" % (self.name)
-        print "Host            : %s" % (self.host)
-        print "--"
+        return " ".join(["Data Segment    : %s" % (self.data_segment),
+        "Address Segment : %s" % (self.address_segment),
+        "Source          : %s" % (self.source),
+        "Event           : %s" % (self.event),
+        "Data            : %s" % (self.data),
+        "Nick            : %s" % (self.nick),
+        "Name            : %s" % (self.name),
+        "Host            : %s" % (self.host),
+        "--"])
 
 class chatnet(object):
     def __init__(self, host, port=6667, use_ssl=False):
@@ -470,8 +471,14 @@ class Channel(object):
         self.init_modules()
 
     def add_module(self, module):
+        # Really haxy test for modules already loaded
         try:
-            self.modules.append(getattr(bModules, module)(self.parent, self))
+            mod = getattr(bModules, module)
+            for i in self.modules:
+                logging.fixme("Scanning %s against %s" % (i, mod))
+                if isinstance(i, mod):
+                    raise bModules.ModuleAlreadyLoaded
+            self.modules.append(mod(self.parent, self))
             return True
         except AttributeError:
             return False

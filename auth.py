@@ -7,7 +7,6 @@ from lib import *
 class AuthMapping(Mapping):
     missing_elements = dict
 
-
 AUTH_FILE_NAME="authen.db"
 
 class Authenticator(object):
@@ -19,8 +18,8 @@ It is managed by AuthModule which tracks the server messages
         self.auth_hash = auth_hash
         self.valid_host = valid_host
         # TODO Case insensitive
-        self.authenticated = []
         self.auth_data = Mapping()
+        self.authenticated = LowerList()
         self.load()
         atexit.register(self.save)
 

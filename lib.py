@@ -6,3 +6,13 @@ class Mapping(dict):
         except KeyError:
             self[item] = self.missing_elements()
             return self[item]
+
+class LowerList(list):
+    @staticmethod
+    def lower(n):
+        try:
+            return n.lower()
+        except AttributeError:
+            return n
+    def __contains__(self, value):
+        return self.lower(value) in map(self.lower, self)

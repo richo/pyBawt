@@ -1,4 +1,5 @@
 import subprocess as sp
+import logging
 
 def oneline(cmd):
     try:
@@ -23,7 +24,9 @@ def current_branch():
         return False
         
 def update_git():
-    return oneline("git pull")
+    data = oneline("git pull")
+    logging.info("Updated source to %s" % data)
+    return data
     # TODO sanity check
 
 

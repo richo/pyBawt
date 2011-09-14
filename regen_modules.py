@@ -8,9 +8,7 @@ import os
 def rebuild_bModules():
     out = open(outfile, 'w')
     # Module directory
-    modules = []
-    for i in os.listdir(MODULE_DIRECTORY):
-        modules.append(os.path.join(MODULE_DIRECTORY, i))
+    modules = [os.path.join(MODULE_DIRECTORY, i) for i in os.listdir(MODULE_DIRECTORY)]
     modules.sort()
     modules.append(CONFIG)
     for i in modules:

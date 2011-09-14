@@ -10,6 +10,8 @@ import logging
 
 VERSION="$Rev: 1252 $".split(" ")[1]
 
+class ModuleAlreadyLoaded(Exception):
+    pass
 
 # TODO Split this out into core modules, and then import a set of user added
 # ones. BawtModule and the stuff to do reloads is all that needs to be global
@@ -129,9 +131,13 @@ class AddModule(BawtM2):
         mod = self.m.group(3)
         try:
             if self.parent.add_module(msg.origin.lower(), mod):
+                logging.info("%s loaded module %s in %s" % (msg.nick, mod, msg.origin.lower()))
                 self.parent.privmsg(msg.replyto, "done.")
             else:
                 self.parent.privmsg(msg.replyto, "No such module")
+        except ModuleAlreadyLoaded:
+                logging.info("%s attempted to load duplicate module %s in %s" % (msg.nick, mod, msg.origin.lower()))
+                self.parent.privmsg(msg.replyto, "Module already loaded in this context")
         except IndexError:
             self.parent.privmsg(msg.replyto, "Module?")
 
@@ -141,6 +147,7 @@ class ChanModule(BawtM2):
     _name = "ChanModule"
     def handle_privmsg(self, msg):
         if not self.auth(msg):
+            logging.info("%s attempted to %s without auth" % (msg.nick, msg.data_segment))
             self.parent.privmsg(msg.replyto, "%s: I don't know you." % (msg.nick))
             return
         argv = msg.data_segment.split(" ")
@@ -205,6 +212,8 @@ class AuthModule(BawtM2):
                 self.parent.privmsg(msg.replyto, "You are identified")
             else:
                 self.parent.privmsg(msg.replyto, "You are not identified")
+    def handle_nick(self, msg):
+        self.handle_part(msg)
     def handle_join(self, msg):
         logging.info("Sighting %s" % msg.nick)
         self.visible[msg.address_segment].append(msg.nick)
@@ -213,7 +222,7 @@ class AuthModule(BawtM2):
         try:
             self.visible[msg.address_segment].remove(msg.nick)
         except ValueError:
-            logging.warn("%s left %s without having been seen, testing auth anyway" % (msg.nick, msg.address_segment))
+            logging.fixme("%s left %s without having been seen, testing auth anyway" % (msg.nick, msg.address_segment))
         if self.visible.refcount(msg.nick) == 0:
             logging.info("Can't see %s; deauthing" % msg.nick)
             self.parent.authenticator.revoke_auth(msg.nick)

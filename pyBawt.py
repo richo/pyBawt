@@ -14,6 +14,7 @@ import random
 import config
 import bModules
 import logging
+import traceback
 
 logging.info("pyBawt started")
 
@@ -84,5 +85,6 @@ except Exception:
         raise
     else:
         logging.error("Exception caught, restarting")
+        traceback.print_exception(*sys.exc_info(), file=logging.Writer(logging.error))
         restart_stub()
 
