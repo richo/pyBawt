@@ -109,7 +109,9 @@ class Message(object):
             if ":" in self.data:
                 self.address_segment, self.data_segment = [i.strip() for i in self.data.split(":", 1)]
             else:
+                logging.fixme("No address segment: %s" % self.data)
                 self.data_segment = self.data
+                self.address_segment = "<NoAddress>"
             # We go a bit further in attempting to gather info...
             #:richo!richo@staffers.psych0tik.net
             m = RE_NICK_MATCH.search(self.source)
@@ -141,9 +143,6 @@ class Message(object):
             if not self.address_segment[0] in ["!", "&", "#"]:
                 return True
         except TypeError:
-            pass
-        except IndexError:
-            # FIXME, the address_segment handler regex is broken
             pass
         return False
 
