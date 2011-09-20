@@ -14,7 +14,6 @@ It is managed by AuthModule which tracks the server messages
     def __init__(self, auth_hash='', valid_host=''):
         self.auth_hash = auth_hash
         self.valid_host = valid_host
-        # TODO Case insensitive
         self.authenticated = LowerList()
         self.load()
         atexit.register(self.save)
