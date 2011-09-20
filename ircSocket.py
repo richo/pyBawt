@@ -142,6 +142,9 @@ class Message(object):
                 return True
         except TypeError:
             pass
+        except IndexError:
+            # FIXME, the address_segment handler regex is broken
+            pass
         return False
 
     def __str__(self):
