@@ -20,4 +20,12 @@ RADIO!!
 
 Infrastructure for retrieving ops
 
-Decide how ircd/network agnostic I want this bot. I'm hoping to keep everything psych0tik agnostic in the modules.d structure. Even then I think I need to move the core stuff out.
+Decide how ircd/network agnostic I want this bot. I'm hoping to keep everything
+psych0tik agnostic in the modules.d structure. Even then I think I need to move
+the core stuff out.
+
+Best way to do this is to find all the thing that depend on being on a given
+ircd and modulate them likewise for psych0tik shit
+
+Then only load what we need. Will probably need another refactor of the module
+system (lol)
