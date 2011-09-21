@@ -1,9 +1,15 @@
+import os
 import subprocess as sp
 import logging
 
+for p in ('/usr/bin/git', '/usr/local/bin/git'):
+    if os.path.exists(p):
+        git_binary = p
+
+
 def oneline(cmd):
     try:
-        p = sp.Popen(cmd.split(" "), stdout=sp.PIPE, close_fds=True)
+        p = sp.Popen(cmd.split(" "), stdout=sp.PIPE, close_fds=True, executable=git_binary)
         p.wait()
         return p.stdout.readline()
     except OSError:
