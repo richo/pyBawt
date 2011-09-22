@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 ##
-# Insert License
+# pyBawt is (Will be) released under the WTFPL
+# You are hereby licensed to do WHATEVER THE FUCK YOU WANT with it's source
+# code
 ##
 
 # Rich Healey '08
