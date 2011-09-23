@@ -1,31 +1,5 @@
-This code will become the new trunk soon.
+The idea in this branch is to work out times when we can construct a new
+bot around an old socket.
 
-I see no reason to maintain the legacy crap.
-
-TODO
-----
-
-Flesh out the API to let it do everything
-
-More verbose admin commands
-
-Handler for adding modules to other channels
-
-Handler for telling the bot what to do
-
-BUG: python2.6 won't create an args module which breaks the auto restart code
-
-RADIO!!
--------
-
-Infrastructure for retrieving ops
-
-Decide how ircd/network agnostic I want this bot. I'm hoping to keep everything
-psych0tik agnostic in the modules.d structure. Even then I think I need to move
-the core stuff out.
-
-Best way to do this is to find all the thing that depend on being on a given
-ircd and modulate them likewise for psych0tik shit
-
-Then only load what we need. Will probably need another refactor of the module
-system (lol)
+We can always bail at the last second anyway and restart, it's unlikely
+that anyone would know
