@@ -1,4 +1,5 @@
 bModules.py
 *.pyc
 note_data*
+pyBawt.log
 authen.db
