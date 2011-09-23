@@ -37,7 +37,9 @@ keys = (('host', passthru),
         ('port', int),
         ('auth_host', passthru),
         ('auth_hash', passthru),
-        ('channels' , to_list)
+        ('channels' , to_list),
+        ('nickserv_nick', passthru),
+        ('nickserv_pass', passthru)
        )
 
 with open(CONFIG_FILE) as fh:

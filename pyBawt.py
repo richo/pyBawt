@@ -46,7 +46,7 @@ net = ircSocket.chatnet(config.host, port=config.port, use_ssl=config.ssl)
 # Ugly hax, port to argparse if we see any more nicks
 nick = config.nick
 net.identify(nick)
-net.auth_self('nickserv', 'b@dpass')
+net.auth_self(config.nickserv_nick, config.nickserv_pass)
 net._debug = True
 
 # Before we hit mainloop, write pidfile
