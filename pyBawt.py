@@ -58,35 +58,42 @@ except IOError:
     print "Couldn't write pidfile"
     exit()
 
-try:
+def init_pyBawt():
     for i in config.channels:
         net.join(i)
+
+
+def mainloop_enter():
     while True:
         try:
             net.recv_wait()
         except ircSocket.FlushQueue:
             pass
+        except KeyboardInterrupt:
+            logging.error("Shutting down due to user intervention")
+            net.quit("Killed from terminal")
+        except bModules.Restart:
+            # TODO Include the user who did this
+            logging.error("Restarting due to user intervention")
+            restart_stub()
+        except ircSocket.IrcDisconnected:
+            if ircSocket.should_reconnect():
+                restart_stub()
+        except ircSocket.IrcTerminated:
+            # Catch but don't handle, die gracefully
+            pass
+        except Exception:
+            # TODO - Checkout from stable git branch
+            if debug: # Debug hook? Either way it's stupid.
+                logging.error("Shutting down and bailing out")
+                raise
+            else:
+                logging.error("Exception caught, restarting")
+                traceback.print_exception(*sys.exc_info(), file=logging.Writer(logging.error))
+                restart_stub()
         net.dump_queue()
-except KeyboardInterrupt:
-    logging.error("Shutting down due to user intervention")
-    net.quit("Killed from terminal")
-except bModules.Restart:
-    # TODO Include the user who did this
-    logging.error("Restarting due to user intervention")
-    restart_stub()
-except ircSocket.IrcDisconnected:
-    if ircSocket.should_reconnect():
-        restart_stub()
-except ircSocket.IrcTerminated:
-    # Catch but don't handle, die gracefully
-    pass
-except Exception:
-    # TODO - Checkout from stable git branch
-    if debug: # Debug hook? Either way it's stupid.
-        logging.error("Shutting down and bailing out")
-        raise
-    else:
-        logging.error("Exception caught, restarting")
-        traceback.print_exception(*sys.exc_info(), file=logging.Writer(logging.error))
-        restart_stub()
+    mainloop_enter()
+if __name__ == "__main__":
+    init_pyBawt()
+    mainloop_enter()
 
