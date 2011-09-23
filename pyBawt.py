@@ -55,8 +55,7 @@ try:
     fh.write(str(os.getpid()))
     fh.close()
 except IOError:
-    print "Couldn't write pidfile"
-    exit()
+    logging.fatal("Couldn't write pidfile")
 
 def init_pyBawt():
     for i in config.channels:

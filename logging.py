@@ -1,4 +1,5 @@
 import time
+import sys
 
 LOGFILE='pyBawt.log'
 
@@ -29,6 +30,11 @@ def warn(msg):
 
 def fixme(msg):
     log("X: %s" % fmt(msg))
+
+def fatal(msg):
+    log("F: %s" % fmt(msg))
+    sys.stderr.write(fmt(msg))
+    exit(1)
 
 class Writer(object):
     def __init__(self, func):
