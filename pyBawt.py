@@ -82,18 +82,19 @@ def mainloop_enter():
         except ircSocket.IrcTerminated:
             # Catch but don't handle, die gracefully
             pass
-        except Exception:
-            # TODO - Checkout from stable git branch
-            if debug: # Debug hook? Either way it's stupid.
-                logging.error("Shutting down and bailing out")
-                raise
-            else:
-                logging.error("Exception caught, restarting")
-                traceback.print_exception(*sys.exc_info(), file=logging.Writer(logging.error))
-                restart_stub()
         net.dump_queue()
     mainloop_enter()
 if __name__ == "__main__":
     init_pyBawt()
-    mainloop_enter()
+    try:
+        mainloop_enter()
+    except Exception:
+        # TODO - Checkout from stable git branch
+        if debug: # Debug hook? Either way it's stupid.
+            logging.error("Shutting down and bailing out")
+            raise
+        else:
+            logging.error("Exception caught, restarting")
+            traceback.print_exception(*sys.exc_info(), file=logging.Writer(logging.error))
+            restart_stub()
 
